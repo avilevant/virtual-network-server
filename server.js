@@ -6,6 +6,10 @@ const knex = require('knex')
 
 const saltRounds = 10;
 
+const ServerConfiguration = {
+    listeningPort: 3003
+}
+
 const db = knex({
     client: 'pg',
     connection: {
@@ -102,6 +106,6 @@ app.get('/api', (req, res) => {
     res.send(dataBase.users)
 })
 
-app.listen(3003, () => {
-    console.log('app running on port 3000')
+app.listen(ServerConfiguration.listeningPort, () => {
+    console.log(`app running on port ${ServerConfiguration.listeningPort}`)
 })
