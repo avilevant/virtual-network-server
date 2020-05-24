@@ -3,6 +3,7 @@ const bodyParser = require('body-parser');
 const bcrypt = require('bcrypt')
 const cors = require('cors')
 const knex = require('knex')
+const jwt = require('jsonwebtoken')
 
 const saltRounds = 10;
 
@@ -27,15 +28,22 @@ app.use(cors());
 
 
 
+
+
 app.post('/signin', (req, res) => {
     db.select('email', 'hash').from('login')
         .where('email', '=', req.body.email)
         .then(data => {
             const isValid = bcrypt.compareSync(req.body.password, data[0].hash);
             if (isValid) {
+               
                 return db.select('*').from('users')
                     .where('email', '=', req.body.email)
                     .then(user => {
+                       
+                        console.log(user[0].id)
+                        // const token =  jwt.sign({id:user[0].id},'whosyourdady')
+                    
                         res.json(user[0])
                     })
                     .catch(err => res.status(400).json('no user'))
