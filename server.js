@@ -103,24 +103,13 @@ app.post('/register', (req, res) => {
 })
 
 
-//signout option....
-
-// app.post('/logout',auth,(req,res)=>{
-//     req.token=''
-//     res.json('signed out safely')
-    
-        
-    
-// }).catch(e =>res.status(500).json('could not sign out'))
-
-// console.log(db.select('*').from('users').then(user=>{console.log(user[0].id)}));
 
 
 
-app.post('/profile',auth,(req,res)=>{
+app.post('/profile',auth,async (req,res)=>{
     const { email, name, location, phone, website, faceBookPage, InstagramPage, youTube, arrayOfCards, mybizz, BizzNetArray,linkedIn} = req.body
             console.log(req.userId)
-            db('users')
+            return db('users')
             .where({id:req.userId})
             .update({
                 business_name: name,
