@@ -129,7 +129,7 @@ app.post('/profile',auth,async (req,res)=>{
            
             
             .catch(err =>{
-                 res.status(400).json('no good')
+                // res.status(400).json('no good')
                  console.log(err)
 
         })
