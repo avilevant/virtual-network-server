@@ -9,7 +9,7 @@ const auth = require('./helper')
 const saltRounds = 10;
 
 const ServerConfiguration = {
-    listeningPort: 3003
+    listeningPort: process.env.PORT || 3003
 }
 
 const db = knex({
