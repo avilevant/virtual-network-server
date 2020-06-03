@@ -34,19 +34,21 @@ const jwt = require('jsonwebtoken')
 
     const auth = (req,res,next) =>{
 
-    try{
+ 
 
         const token = req.header('Authorization').replace('Bearer ','')
-        const decoded = jwt.verify(token, 'whosyourdady')
-       
+        let decoded = null;
+        try{
+        decoded = jwt.verify(token, 'whosyourdady')
+    }catch(e){
+        res.status(401).json('could not auth: ', e)
+    }   
         // console.log(decoded.id)
         req.userId=decoded.id
         req.userName=decoded.name
         req.userToken=token
         next()
-    }catch(e){
-        res.status(401).json('could not auth')
-    }
+    
 
 }
 
