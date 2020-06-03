@@ -123,7 +123,7 @@ app.post('/profile',auth,async (req,res)=>{
                 business_arrayofcards: arrayOfCards,
                 business_mybizz: mybizz,
                 business_network: BizzNetArray,
-                business_linkedIn:linkedIn
+                business_linkedin:linkedIn
     
             }).then(res.json('all is well or not???'))
            
