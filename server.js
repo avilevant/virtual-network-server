@@ -15,10 +15,8 @@ const ServerConfiguration = {
 const db = knex({
     client: 'pg',
     connection: {
-        host: '127.0.0.1',
-        user: 'postgres',
-        password: '011029519',
-        database: 'virtual-networking'
+        connectionString : process.env.DATABASE_URL,
+        ssl:true
     }
 });
 
@@ -118,7 +116,7 @@ app.post('/register', (req, res) => {
 
 
 app.post('/profile',auth,(req,res)=>{
-    const { email, name, location, phone, website, faceBookPage, InstagramPage, youTube, arrayOfCards, mybizz, BizzNetArray} = req.body
+    const { email, name, location, phone, website, faceBookPage, InstagramPage, youTube, arrayOfCards, mybizz, BizzNetArray,linkedIn} = req.body
             console.log(req.userId)
             db('users')
             .where({id:req.userId})
@@ -133,7 +131,8 @@ app.post('/profile',auth,(req,res)=>{
                 business_youtube: youTube,
                 business_arrayofcards: arrayOfCards,
                 business_mybizz: mybizz,
-                business_network: BizzNetArray
+                business_network: BizzNetArray,
+                business_linkedIn:linkedIn
     
             }).then(res.json('all is well'))
            
