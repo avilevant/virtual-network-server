@@ -125,7 +125,7 @@ app.post('/profile',auth,async (req,res)=>{
                 business_network: BizzNetArray,
                 business_linkedIn:linkedIn
     
-            }).then(res.json('all is well'))
+            }).then(res.json('all is well or not???'))
            
             
             .catch(err =>{
