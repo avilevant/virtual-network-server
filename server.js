@@ -4,6 +4,7 @@ const bcrypt = require('bcrypt')
 const cors = require('cors')
 const knex = require('knex')
 const jwt = require('jsonwebtoken')
+const auth = require('./helper')
 
 const saltRounds = 10;
 
@@ -24,6 +25,8 @@ const db = knex({
 
 const app = express();
 app.use(bodyParser.json());
+app.use(bodyParser.json({limit: '200mb', extended: true}))
+app.use(bodyParser.urlencoded({limit: '200mb', extended: true}))
 app.use(cors());
 
 
@@ -35,24 +38,37 @@ app.post('/signin', (req, res) => {
         .where('email', '=', req.body.email)
         .then(data => {
             const isValid = bcrypt.compareSync(req.body.password, data[0].hash);
-            if (isValid) {
-               
-                return db.select('*').from('users')
+            if (isValid ) {
+            
+              db.select('*').from('users')
                     .where('email', '=', req.body.email)
                     .then(user => {
-                       
-                        console.log(user[0].id)
-                        // const token =  jwt.sign({id:user[0].id},'whosyourdady')
-                    
-                        res.json(user[0])
+                        const token =  jwt.sign({id:user[0].id,name:user[0].name},'whosyourdady')
+                        console.log("token is the best token: ",token)
+                       res.status(200).send({token: token, user:user[0]})
                     })
-                    .catch(err => res.status(400).json('no user'))
+                    .catch(err => res.status(400).json("no good"))
             } else {
                 res.status(400).json('wrong info')
             }
         })
         .catch(err => res.status(400).json('wrong information entered'))
 })
+
+
+//get data from user for images url, and upload to db
+app.post('/uploadImg',auth, (req,res)=>{
+    // console.log(req.userId) 
+    db("users").where({id:req.userId})
+    .update({
+        business_background_pic:req.body.url1,
+        business_small_pic:req.body.url2
+    }).then(res.json('uploaded'))
+    
+    .catch(err => res.status(400).json('no good'))
+})
+
+
 
 app.post('/register', (req, res) => {
     const { email, name, password, phone } = req.body;
@@ -71,7 +87,12 @@ app.post('/register', (req, res) => {
                         email: loginEmail[0],
                         name: name,
                         phone: phone
-                    }).then(user => { res.json(user[0]) })
+                    }).then(user => {
+                        const token =  jwt.sign({id:user[0].id},'whosyourdady')
+                        console.log("token is the best token: ",token)
+                        res.status(200).send({token: token, user:user[0]})
+                        // .json(user[0])
+                     })
                     .then(trx.commit)
                     .catch(trx.rollback)
 
@@ -81,20 +102,26 @@ app.post('/register', (req, res) => {
 
 })
 
+
+//signout option....
+
+// app.post('/logout',auth,(req,res)=>{
+//     req.token=''
+//     res.json('signed out safely')
+    
+        
+    
+// }).catch(e =>res.status(500).json('could not sign out'))
+
 // console.log(db.select('*').from('users').then(user=>{console.log(user[0].id)}));
 
 
 
-app.post('/profile', (req,res)=>{
-    const {id, email, name, location, phone, website, faceBookPage, InstagramPage, youTube, arrayOfCards, mybizz, BizzNetArray} = req.body
-    
-    // db.select('*').from('users').where({ id })
-    
-    // .then(user => {
-       
-        // if (user.length) {
+app.post('/profile',auth,(req,res)=>{
+    const { email, name, location, phone, website, faceBookPage, InstagramPage, youTube, arrayOfCards, mybizz, BizzNetArray} = req.body
+            console.log(req.userId)
             db('users')
-            // .where({id})
+            .where({id:req.userId})
             .update({
                 business_name: name,
                 business_phone: phone,
@@ -108,42 +135,41 @@ app.post('/profile', (req,res)=>{
                 business_mybizz: mybizz,
                 business_network: BizzNetArray
     
-            })
-            // .then(user => { res.json(user[0]) })
+            }).then(res.json('all is well'))
+           
             
-            .catch(err => res.status(400).json('no good'))
-            // .then(res.json('data was sent to DataBase'))
-        // } else {
-        //     res.status(400).json('no user found')
-        // }
-    })
-    // .catch(err => res.status(400).json('no good'))
-   
+            .catch(err =>{
+                 res.status(400).json('no good')
+                 console.log(err)
 
+        })
+      
+    })
+
+
+
+
+
+// app.get('/profile/:id', (req, res) => {
+//     const { id } = req.params;
+//     db.select('*').from('users').where({ id })
+//         .then(user => {
+//             if (user.length) {
+//                 res.json(user[0])
+//             } else {
+//                 res.status(400).json('no user found')
+//             }
+//         }).catch(err => res.status(400).json('not found'))
 // })
 
 
 
 
-app.get('/profile/:id', (req, res) => {
+app.get('/personalprofile/:id', (req, res) => {
     const { id } = req.params;
-    db.select('*').from('users').where({ id })
-        .then(user => {
-            if (user.length) {
-                res.json(user[0])
-            } else {
-                res.status(400).json('no user found')
-            }
-        }).catch(err => res.status(400).json('not found'))
-})
-
-
-
-
-app.get('/personalprofile', (req, res) => {
-    // const { id } = req.body;
+    console.log(req.params)
     db.select("*").from('users')
-    // .where({id})
+    .where({id:id})
     .then(users=>{
 
         res.send(users[0])
@@ -157,3 +183,4 @@ app.get('/personalprofile', (req, res) => {
 app.listen(ServerConfiguration.listeningPort, () => {
     console.log(`app running on port ${ServerConfiguration.listeningPort}`)
 })
+
