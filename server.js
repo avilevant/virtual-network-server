@@ -65,7 +65,7 @@ app.post('/uploadImg',auth, (req,res)=>{
         business_small_pic:req.body.url2
     }).then(res.json('uploaded'))
     
-    .catch(err => res.status(400).json('no good'))
+    .catch(err => console.log(err))
 })
 
 
