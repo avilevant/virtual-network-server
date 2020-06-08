@@ -56,17 +56,17 @@ app.post('/signin', (req, res) => {
 })
 
 
-//get data from user for images url, and upload to db
-// app.post('/uploadImg',auth, (req,res)=>{
-//     // console.log(req.userId) 
-//     db("users").where({id:req.userId})
-//     .update({
-//         business_background_pic:req.body.url1,
-//         business_small_pic:req.body.url2
-//     }).then(res.json('uploaded'))
+get data from user for images url, and upload to db
+app.post('/uploadImg',auth, (req,res)=>{
+    // console.log(req.userId) 
+    db("users").where({id:req.userId})
+    .update({
+        business_background_pic:req.body.url1,
+        business_small_pic:req.body.url2
+    }).then(res.json('uploaded'))
     
-//     .catch(err => console.log(err))
-// })
+    .catch(err => console.log(err))
+})
 
 
 
@@ -123,9 +123,9 @@ app.post('/profile',auth,async (req,res)=>{
                 business_arrayofcards: arrayOfCards,
                 business_mybizz: mybizz,
                 business_network: BizzNetArray,
-                business_linkedin:linkedIn,
-                business_background_pic:url1,
-                business_small_pic:url2
+                business_linkedin:linkedIn
+                // business_background_pic:url1,
+                // business_small_pic:url2
     
             }).then(res.json('all is well or not???'))
            
