@@ -1,38 +1,6 @@
 const jwt = require('jsonwebtoken')
 
-// const auth = (req,res,next) =>{
-
-    
-//     const token = req.header['Authorization']|| req.headers['x-access-token']
-//     console.log(token)
-//     if(token.startsWith('Bearer ')){
-//         token= token.replace('Bearer ','')
-//         // token = token.slice(7,token.length)
-//     }
-   
-//     if(token){
-//         jwt.verify(token, 'whosyourdady', (err,decoded)=>{
-//             if(err){
-//                 return res.json('token not valid')
-//             }else{
-//                 req.decoded=decoded
-//                 req.userId=decoded.id
-//                 req.userName=decoded.name
-//                 req.userToken=token
-//                 next()
-//             }
-//         })
-   
-    
-       
-//     }else{
-//         res.json('no token found')
-//     }
-    
-
-    
-
-    const auth = (req,res,next) =>{
+     const auth = (req,res,next) =>{
 
  
 

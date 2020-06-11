@@ -105,8 +105,8 @@ app.post('/register', (req, res) => {
 
 
 
-app.post('/profile',auth,async (req,res)=>{
-    const { email, name, location, phone, website, faceBookPage, InstagramPage, youTube, arrayOfCards, mybizz, BizzNetArray,linkedIn,url1,url2} = req.body
+app.post('/profile',auth, (req,res)=>{
+    const { email, name, location, phone, website, faceBookPage, InstagramPage, youTube, arrayOfCards, mybizz, BizzNetArray,linkedIn} = req.body
             console.log(req.userId)
             return db('users')
             .where({id:req.userId})
@@ -123,8 +123,7 @@ app.post('/profile',auth,async (req,res)=>{
                 business_mybizz: mybizz,
                 business_network: BizzNetArray,
                 business_linkedin:linkedIn
-                // business_background_pic:url1,
-                // business_small_pic:url2
+                
     
             }).then(res.json('all is well or not???'))
            
@@ -141,17 +140,16 @@ app.post('/profile',auth,async (req,res)=>{
 
 
 
-// app.get('/profile/:id', (req, res) => {
-//     const { id } = req.params;
-//     db.select('*').from('users').where({ id })
-//         .then(user => {
-//             if (user.length) {
-//                 res.json(user[0])
-//             } else {
-//                 res.status(400).json('no user found')
-//             }
-//         }).catch(err => res.status(400).json('not found'))
-// })
+app.get('/profile/',auth, (req, res) => {
+    db.select('*').from('users').where({id:req.userId})
+        .then(user => {
+            if (user.length) {
+                res.json(user[0])
+            } else {
+                res.status(400).json('no user found')
+            }
+        }).catch(err => res.status(400).json('not found'))
+})
 
 
 
