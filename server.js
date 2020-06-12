@@ -106,12 +106,12 @@ app.post('/register', (req, res) => {
 
 
 app.post('/profile',auth, (req,res)=>{
-    const { email, name, location, phone, website, faceBookPage, InstagramPage, youTube, arrayOfCards, mybizz, BizzNetArray,linkedIn} = req.body
+    const { email, businessName, location, phone, website, faceBookPage, InstagramPage, youTube, arrayOfCards, mybizz, BizzNetArray,linkedIn,twitter,jobDescription } = req.body
             console.log(req.userId)
             return db('users')
             .where({id:req.userId})
             .update({
-                business_name: name,
+                business_name: businessName,
                 business_phone: phone,
                 business_email: email,
                 business_location: location,
@@ -122,7 +122,9 @@ app.post('/profile',auth, (req,res)=>{
                 business_arrayofcards: arrayOfCards,
                 business_mybizz: mybizz,
                 business_network: BizzNetArray,
-                business_linkedin:linkedIn
+                business_linkedin:linkedIn,
+                business_twitter:twitter,
+                jobDescription:jobDescription
                 
     
             }).then(res.json('all is well or not???'))
