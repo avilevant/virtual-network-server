@@ -124,7 +124,8 @@ app.post('/profile',auth, (req,res)=>{
                 business_network: BizzNetArray,
                 business_linkedin:linkedIn,
                 business_twitter:twitter,
-                jobdescription:jobdescription
+                jobdescription:jobdescription,
+                userData:userData
                 
     
             }).then(res.json('all is well or not???'))
