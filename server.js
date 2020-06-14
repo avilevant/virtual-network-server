@@ -106,7 +106,7 @@ app.post('/register', (req, res) => {
 
 
 app.post('/profile',auth, (req,res)=>{
-    const { email, name, location, phone, website, faceBookPage, InstagramPage, youTube, arrayOfCards, mybizz, BizzNetArray,linkedIn,twitter,jobdescription } = req.body
+    const { email, name, location, phone, website, faceBookPage, InstagramPage, youTube, arrayOfCards, mybizz, BizzNetArray,linkedIn,twitter,jobdescription, userData } = req.body
             console.log(req.userId)
             return db('users')
             .where({id:req.userId})
