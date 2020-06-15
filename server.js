@@ -57,12 +57,14 @@ app.post('/signin', (req, res) => {
 
 
 // get data from user for images url, and upload to db
-app.post('/uploadImg',auth, (req,res)=>{
-    console.log('first step') 
+app.post('/uploadImg/:id',auth, (req,res)=>{
+    console.log('first step')
+    const { id } = req.params; 
     db("users").where({id:req.userId})
-    .update({
-        business_background_pic:req.body.url1,
-        business_small_pic:req.body.url2
+    .update( id === "1" ? {
+        business_background_pic:req.body.url,
+    } : {
+        business_small_pic:req.body.url
     }).then(res.json('uploaded'))
     .catch(err => console.log(err))
 })
