@@ -4,6 +4,7 @@ const jwt = require('jsonwebtoken')
 
  
         console.log(req.header)
+        //TODO: if the authorizatoin header is missing, should return some auth error
         const token = req.header('Authorization').replace('Bearer ','')
         let decoded = null;
         try{

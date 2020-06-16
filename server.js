@@ -58,13 +58,14 @@ app.post('/signin', (req, res) => {
 
 // get data from user for images url, and upload to db
 app.post('/uploadImg/:id',auth, (req,res)=>{
-    console.log('first step')
+    let tempUrl = req.body.url
+    let sizedUrl = tempUrl.replace('.jpg','_1200x850.jpg')
     const { id } = req.params; 
     db("users").where({id:req.userId})
     .update( id === "1" ? {
-        business_background_pic:req.body.url,
+        business_background_pic:sizedUrl,
     } : {
-        business_small_pic:req.body.url
+        business_small_pic:sizedUrl
     }).then(res.json('uploaded'))
     .catch(err => console.log(err))
 })
