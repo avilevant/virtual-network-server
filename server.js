@@ -131,7 +131,7 @@ app.post('/profile',auth, (req,res)=>{
                 userdata:userData
                 
     
-            }).then(res.json('all is well or not???'))
+            }).then(res.json('all is well'))
            
             
             .catch(err =>{
@@ -173,7 +173,9 @@ app.get('/personalprofile/:id', (req, res) => {
     .catch(err=>res.status(400).json('did not get users'))
 })
 
-
+// app.get('/service-worker.js', (req,res)=>{
+//     res.sendFile(path.resolve(__dirname, '..','build', 'service-worker.js'))
+// })
 
 app.listen(ServerConfiguration.listeningPort, () => {
     console.log(`app running on port ${ServerConfiguration.listeningPort}`)
