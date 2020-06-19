@@ -24,10 +24,10 @@ const db = knex({
 
 
 const app = express();
-app.use(bodyParser.json());
-app.use(bodyParser.json({limit: '200mb', extended: true}))
-app.use(bodyParser.urlencoded({limit: '200mb', extended: true}))
+
+
 app.use(cors());
+app.use(bodyParser.json());
 
 
 
