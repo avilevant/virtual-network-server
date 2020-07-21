@@ -60,11 +60,11 @@ app.post('/signin', (req, res) => {
 app.post('/uploadImg/:id',auth, (req,res)=>{
     let tempUrl = req.body.url
     let sizedUrl;
-    if(tempUrl.includes(jpg||JPG)){
+    if(tempUrl.includes(jpg)||tempUrl.includes(JPG)){
         sizedUrl = tempUrl.replace(/.JPG/i,'_1200x850.jpg')
-    }else if(tempUrl.includes(png||PNG)){
+    }else if(tempUrl.includes(png)||tempUrl.includes(PNG) ){
         sizedUrl = tempUrl.replace(/.PNG/i,'_1200x850.png')
-    }else if(tempUrl.includes(jpeg||JPEG)){
+    }else if(tempUrl.includes(jpeg)||tempUrl.includes(JPEG)){
         sizedUrl = tempUrl.replace(/.JPEG/i,'_1200x850.jpeg')
     }
 
