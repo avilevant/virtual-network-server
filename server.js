@@ -59,23 +59,25 @@ app.post('/signin', (req, res) => {
 // get data from user for images url, and upload to db
 app.post('/uploadImg/:id',auth, (req,res)=>{
     let tempUrl = req.body.url
-    let sizedUrl;
-    if(tempUrl.includes(jpg)||tempUrl.includes(JPG)){
-        sizedUrl = tempUrl.replace(/.JPG/i,'_1200x850.jpg')
-    }else if(tempUrl.includes(png)||tempUrl.includes(PNG) ){
-        sizedUrl = tempUrl.replace(/.PNG/i,'_1200x850.png')
-    }else if(tempUrl.includes(jpeg)||tempUrl.includes(JPEG)){
-        sizedUrl = tempUrl.replace(/.JPEG/i,'_1200x850.jpeg')
-    }
+    // let sizedUrl;
+    // if(tempUrl.includes(jpg)||tempUrl.includes(JPG)){
+    //     sizedUrl = tempUrl.replace(/.JPG/i,'_1200x850.jpg')
+    // }else if(tempUrl.includes(png)||tempUrl.includes(PNG)){
+    //     sizedUrl = tempUrl.replace(/.PNG/i,'_1200x850.png')
+    // }else if(tempUrl.includes(jpeg)||tempUrl.includes(JPEG)){
+    //     sizedUrl = tempUrl.replace(/.JPEG/i,'_1200x850.jpeg')
+    // }
+
+    // console.log(sizedUrl)
 
     
     // let sizedUrl = tempUrl.replace('.jpg','_1200x850.jpg')
     const { id } = req.params; 
     db("users").where({id:req.userId})
     .update( id === "1" ? {
-        business_background_pic:sizedUrl,
+        business_background_pic:tempUrl,
     } : {
-        business_small_pic:sizedUrl
+        business_small_pic:tempUrl
     }).then(res.json('uploaded'))
     .catch(err => console.log(err))
 })
