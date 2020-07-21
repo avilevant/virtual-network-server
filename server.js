@@ -61,11 +61,11 @@ app.post('/uploadImg/:id',auth, (req,res)=>{
     let tempUrl = req.body.url
     let sizedUrl;
     if(tempUrl.includes(jpg||JPG)){
-        newUrl = sizedUrl.replace(/.JPG/i,'_1200x850.jpg')
+        sizedUrl = tempUrl.replace(/.JPG/i,'_1200x850.jpg')
     }else if(tempUrl.includes(png||PNG)){
-        newUrl = sizedUrl.replace(/.PNG/i,'_1200x850.png')
+        sizedUrl = tempUrl.replace(/.PNG/i,'_1200x850.png')
     }else if(tempUrl.includes(jpeg||JPEG)){
-        newUrl = sizedUrl.replace(/.JPEG/i,'_1200x850.jpeg')
+        sizedUrl = tempUrl.replace(/.JPEG/i,'_1200x850.jpeg')
     }
 
     
