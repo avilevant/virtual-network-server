@@ -56,22 +56,38 @@ app.post('/signin', (req, res) => {
 })
 
 
+
+//create a v-card
+app.get('vCard',(req,res)=>{
+    const vCardsJS = require('vcards-js');
+    
+    //create new vCard
+    vCard = vCardsJS();
+
+    //set props
+    vCard.Name = req.body.name
+    vCard.business = req.body.business
+    vCard.share = req.body.share
+    //set content-type and disposition including desired filename
+    res.set('Content-Type', 'text/vcard; name="enesser.vcf"');
+    res.set('Content-Disposition', 'inline; filename="enesser.vcf"');
+    
+    try{
+        //send the response
+        res.send(vCard.getFormattedString());
+    }catch(e){
+        res.status(401).json('could not send data: ',e)
+    }
+    
+
+
+})
+
+
+
 // get data from user for images url, and upload to db
 app.post('/uploadImg/:id',auth, (req,res)=>{
     let tempUrl = req.body.url
-    // let sizedUrl;
-    // if(tempUrl.includes(jpg)||tempUrl.includes(JPG)){
-    //     sizedUrl = tempUrl.replace(/.JPG/i,'_1200x850.jpg')
-    // }else if(tempUrl.includes(png)||tempUrl.includes(PNG)){
-    //     sizedUrl = tempUrl.replace(/.PNG/i,'_1200x850.png')
-    // }else if(tempUrl.includes(jpeg)||tempUrl.includes(JPEG)){
-    //     sizedUrl = tempUrl.replace(/.JPEG/i,'_1200x850.jpeg')
-    // }
-
-    // console.log(sizedUrl)
-
-    
-    // let sizedUrl = tempUrl.replace('.jpg','_1200x850.jpg')
     const { id } = req.params; 
     db("users").where({id:req.userId})
     .update( id === "1" ? {
