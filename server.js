@@ -58,7 +58,7 @@ app.post('/signin', (req, res) => {
 
 
 //create a v-card
-app.get('vCard',(req,res)=>{
+app.get('/vCard',(req,res)=>{
     const vCardsJS = require('vcards-js');
     
     //create new vCard
