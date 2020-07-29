@@ -57,30 +57,58 @@ app.post('/signin', (req, res) => {
 
 
 
+// //create a v-card
+// app.get('/vCard',(req,res)=>{
+//     const vCardsJS = require('vcards-js');
+    
+//     //create new vCard
+//     vCard = vCardsJS();
+
+//     //set props
+//     vCard.Name = req.body.name
+//     vCard.business = req.body.business
+//     vCard.share = req.body.share
+//     //set content-type and disposition including desired filename
+//     res.set('Content-Type', 'text/vcard; name="enesser.vcf"');
+//     res.set('Content-Disposition', 'inline; filename="enesser.vcf"');
+    
+//     try{
+//         //send the response
+//         res.send(vCard.getFormattedString());
+//     }catch(e){
+//         res.status(401).json('could not send data: ',e)
+//     }
+    
+
+
+// })
+
+
+
 //create a v-card
-app.get('/vCard',(req,res)=>{
+app.get('/vCard/:id',(req,res)=>{
     const vCardsJS = require('vcards-js');
     
     //create new vCard
     vCard = vCardsJS();
 
-    //set props
-    vCard.Name = req.body.name
-    vCard.business = req.body.business
-    vCard.share = req.body.share
+    // get params for user from DB
+    const { id } = req.params;
+    db.select("*").from('users')
+    .where({id:id})
+    .then(users=>{
+         //set props
+    vCard.Name = users[0].name
+    vCard.business = users[0].business
+    vCard.share = users[0].share
     //set content-type and disposition including desired filename
     res.set('Content-Type', 'text/vcard; name="enesser.vcf"');
     res.set('Content-Disposition', 'inline; filename="enesser.vcf"');
+     //send the response
+     res.send(vCard.getFormattedString());  
     
-    try{
-        //send the response
-        res.send(vCard.getFormattedString());
-    }catch(e){
-        res.status(401).json('could not send data: ',e)
     }
-    
-
-
+    ).catch(err =>res.status(401).json('could not send data: ',err))
 })
 
 
