@@ -80,7 +80,7 @@ app.get('/vCard/:id',(req,res)=>{
     res.set('Content-Disposition', 'inline; filename="enesser.vcf"');
      //send the response
      res.send(vCard.getFormattedString());
-     console.log(enesser.vcf)  
+    //  console.log(enesser.vcf)  
      console.log(vCard.getFormattedString());
     
     }
