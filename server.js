@@ -35,13 +35,13 @@ app.use(bodyParser.json());
 
 app.post('/signin', (req, res) => {
     db.select('email', 'hash').from('login')
-        .where('email', '=', users[0].email)
+        .where('email', '=', req.body.email)
         .then(data => {
-            const isValid = bcrypt.compareSync(users[0].password, data[0].hash);
+            const isValid = bcrypt.compareSync(req.body.password, data[0].hash);
             if (isValid ) {
             
               db.select('*').from('users')
-                    .where('email', '=', users[0].email)
+                    .where('email', '=', req.body.email)
                     .then(user => {
                         const token =  jwt.sign({id:user[0].id,name:user[0].name},'whosyourdady')
                         console.log("token is the best token: ",token)
@@ -58,36 +58,36 @@ app.post('/signin', (req, res) => {
 
 
 //create a v-card
-app.get('/vCard/:id',(req,res)=>{
+app.get('/vCard',(req,res)=>{
     const vCardsJS = require('vcards-js');
     
     //create new vCard
     vCard = vCardsJS();
 
-    // get params for user from DB
-    const { id } = req.params;
-    db.select("*").from('users')
-    .where({id:id})
-    .then(users=>{
-         //set props
-    vCard.Name = users[0].name
-    vCard.business = users[0].business
-    vCard.share = users[0].share
+    //set props
+    vCard.Name = req.body.name
+    vCard.business = req.body.business
+    vCard.share = req.body.share
     //set content-type and disposition including desired filename
     res.set('Content-Type', 'text/vcard; name="enesser.vcf"');
     res.set('Content-Disposition', 'inline; filename="enesser.vcf"');
-     //send the response
-     res.send(vCard.getFormattedString());  
     
+    try{
+        //send the response
+        res.send(vCard.getFormattedString());
+    }catch(e){
+        res.status(401).json('could not send data: ',e)
     }
-    ).catch(err =>res.status(401).json('could not send data: ',err))
+    
+
+
 })
 
 
 
 // get data from user for images url, and upload to db
 app.post('/uploadImg/:id',auth, (req,res)=>{
-    let tempUrl = users[0].url
+    let tempUrl = req.body.url
     const { id } = req.params; 
     db("users").where({id:req.userId})
     .update( id === "1" ? {
@@ -101,7 +101,7 @@ app.post('/uploadImg/:id',auth, (req,res)=>{
 
 
 app.post('/register', (req, res) => {
-    const { email, name, password, phone } = users[0];
+    const { email, name, password, phone } = req.body;
     const hash = bcrypt.hashSync(password, saltRounds);
     db.transaction(trx => {
         trx.insert({
@@ -137,7 +137,7 @@ app.post('/register', (req, res) => {
 
 
 app.post('/profile',auth, (req,res)=>{
-    const { email, name, location, phone, website, faceBookPage, InstagramPage, youTube, arrayOfCards, mybizz, BizzNetArray,linkedIn,twitter,jobdescription, userData } = users[0]
+    const { email, name, location, phone, website, faceBookPage, InstagramPage, youTube, arrayOfCards, mybizz, BizzNetArray,linkedIn,twitter,jobdescription, userData } = req.body
             console.log(req.userId)
             return db('users')
             .where({id:req.userId})
