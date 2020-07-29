@@ -98,11 +98,11 @@ app.get('/vCard/:id',(req,res)=>{
     .where({id:id})
     .then(users=>{
 
-        console.log('user: ', users[0])
+        console.log('user: ', users[0].name,users[0].business_name,`https://virtual-networking.website/personalprofile/${users[0].id}`)
          //set props
     vCard.Name = users[0].name
-    vCard.business = users[0].business
-    vCard.share = users[0].share
+    vCard.business = users[0].business_name
+    vCard.share = `https://virtual-networking.website/personalprofile/${users[0].id}`
     //set content-type and disposition including desired filename
     res.set('Content-Type', 'text/vcard; name="enesser.vcf"');
     res.set('Content-Disposition', 'inline; filename="enesser.vcf"');
