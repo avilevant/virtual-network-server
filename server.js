@@ -97,6 +97,8 @@ app.get('/vCard/:id',(req,res)=>{
     db.select("*").from('users')
     .where({id:id})
     .then(users=>{
+
+        console.log(users[0])
          //set props
     vCard.Name = users[0].name
     vCard.business = users[0].business
