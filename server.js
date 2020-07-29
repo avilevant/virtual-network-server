@@ -75,23 +75,16 @@ app.get('/vCard/:id',(req,res)=>{
     vCard.Name = users[0].name
     vCard.business = users[0].business_name
     vCard.share = `https://virtual-networking.website/personalprofile/${users[0].id}`
-    // //set content-type and disposition including desired filename
-    // res.set('Content-Type', 'text/vcard; name="enesser.vcf"');
-    // res.set('Content-Disposition', 'inline; filename="enesser.vcf"');
-    //  //send the response
-    //  res.send(vCard.getFormattedString());
-    // //  console.log(enesser.vcf)  
-    //  console.log(vCard.getFormattedString());
+    //set content-type and disposition including desired filename
+    res.set('Content-Type', 'text/vcard; name="enesser.vcf"');
+    res.set('Content-Disposition', 'inline; filename="enesser.vcf"');
+     //send the response
+     res.send(vCard.getFormattedString());
+    //  console.log(enesser.vcf)  
+     console.log(vCard.getFormattedString());
     
     }
-    ).then(
-        // set content-type and disposition including desired filename
-        res.set('Content-Type', 'text/vcard; name="enesser.vcf"'),
-        res.set('Content-Disposition', 'inline; filename="enesser.vcf"'))
-      .then(
-        
-     res.send(vCard.getFormattedString())
-  
+   
       ).catch(err =>res.status(401).json('could not send data: ',err))
 })
 
