@@ -88,7 +88,7 @@ app.post('/signin', (req, res) => {
 //create a v-card
 app.get('/vCard/:id',(req,res)=>{
     const vCardsJS = require('vcards-js');
-    
+    console.log('called')
     //create new vCard
     vCard = vCardsJS();
 
@@ -98,7 +98,7 @@ app.get('/vCard/:id',(req,res)=>{
     .where({id:id})
     .then(users=>{
 
-        console.log(users[0])
+        console.log('user: ', users[0])
          //set props
     vCard.Name = users[0].name
     vCard.business = users[0].business
